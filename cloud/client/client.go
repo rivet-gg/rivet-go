@@ -3,6 +3,12 @@
 package client
 
 import (
+	bytes "bytes"
+	context "context"
+	json "encoding/json"
+	errors "errors"
+	rivetgo "github.com/rivet-gg/rivet-go"
+	cloud "github.com/rivet-gg/rivet-go/cloud"
 	auth "github.com/rivet-gg/rivet-go/cloud/auth"
 	devicesclient "github.com/rivet-gg/rivet-go/cloud/devices/client"
 	gamesclient "github.com/rivet-gg/rivet-go/cloud/games/client"
@@ -11,6 +17,7 @@ import (
 	tiers "github.com/rivet-gg/rivet-go/cloud/tiers"
 	uploads "github.com/rivet-gg/rivet-go/cloud/uploads"
 	core "github.com/rivet-gg/rivet-go/core"
+	io "io"
 	http "net/http"
 )
 
@@ -45,4 +52,83 @@ func NewClient(opts ...core.ClientOption) *Client {
 		Tiers:      tiers.NewClient(opts...),
 		Uploads:    uploads.NewClient(opts...),
 	}
+}
+
+// Returns the basic information required to use the cloud APIs.
+func (c *Client) Bootstrap(ctx context.Context) (*cloud.BootstrapResponse, error) {
+	baseURL := "https://api.rivet.gg"
+	if c.baseURL != "" {
+		baseURL = c.baseURL
+	}
+	endpointURL := baseURL + "/" + "cloud/bootstrap"
+
+	errorDecoder := func(statusCode int, body io.Reader) error {
+		raw, err := io.ReadAll(body)
+		if err != nil {
+			return err
+		}
+		apiError := core.NewAPIError(statusCode, errors.New(string(raw)))
+		decoder := json.NewDecoder(bytes.NewReader(raw))
+		switch statusCode {
+		case 500:
+			value := new(rivetgo.InternalError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 429:
+			value := new(rivetgo.RateLimitError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 403:
+			value := new(rivetgo.ForbiddenError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 408:
+			value := new(rivetgo.UnauthorizedError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 404:
+			value := new(rivetgo.NotFoundError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		case 400:
+			value := new(rivetgo.BadRequestError)
+			value.APIError = apiError
+			if err := decoder.Decode(value); err != nil {
+				return apiError
+			}
+			return value
+		}
+		return apiError
+	}
+
+	var response *cloud.BootstrapResponse
+	if err := core.DoRequest(
+		ctx,
+		c.httpClient,
+		endpointURL,
+		http.MethodGet,
+		nil,
+		&response,
+		false,
+		c.header,
+		errorDecoder,
+	); err != nil {
+		return response, err
+	}
+	return response, nil
 }

@@ -3,7 +3,7 @@
 package version
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	cdn "github.com/rivet-gg/rivet-go/cloud/version/cdn"
 	engine "github.com/rivet-gg/rivet-go/cloud/version/engine"
 	identity "github.com/rivet-gg/rivet-go/cloud/version/identity"

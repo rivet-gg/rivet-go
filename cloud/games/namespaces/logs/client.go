@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	namespaces "github.com/rivet-gg/rivet-go/cloud/games/namespaces"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -38,11 +38,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns a list of lobbies for the given game namespace.
 func (c *Client) ListNamespaceLobbies(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.ListNamespaceLobbiesRequest) (*namespaces.ListNamespaceLobbiesResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/logs/lobbies", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/logs/lobbies", gameId, namespaceId)
 
 	queryParams := make(url.Values)
 	if request.BeforeCreateTs != nil {
@@ -125,11 +125,11 @@ func (c *Client) ListNamespaceLobbies(ctx context.Context, gameId uuid.UUID, nam
 
 // Returns a lobby from the given game namespace.
 func (c *Client) GetNamespaceLobby(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, lobbyId uuid.UUID) (*namespaces.GetNamespaceLobbyResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/logs/lobbies/%v", gameId, namespaceId, lobbyId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/logs/lobbies/%v", gameId, namespaceId, lobbyId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

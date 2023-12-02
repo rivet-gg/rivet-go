@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
 	group "github.com/rivet-gg/rivet-go/group"
@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Requests to join a group.
 func (c *Client) CreateJoinRequest(ctx context.Context, groupId uuid.UUID) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/join-request", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/join-request", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -114,11 +114,11 @@ func (c *Client) CreateJoinRequest(ctx context.Context, groupId uuid.UUID) error
 
 // Resolves a join request for a given group.
 func (c *Client) ResolveJoinRequest(ctx context.Context, groupId uuid.UUID, identityId uuid.UUID, request *group.ResolveJoinRequestRequest) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/join-request/%v", groupId, identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/join-request/%v", groupId, identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

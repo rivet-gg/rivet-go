@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	games "github.com/rivet-gg/rivet-go/cloud/games"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Lists CDN sites for a game.
 func (c *Client) ListGameCdnSites(ctx context.Context, gameId uuid.UUID) (*games.ListGameCdnSitesResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/cdn/sites", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/cdn/sites", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -115,11 +115,11 @@ func (c *Client) ListGameCdnSites(ctx context.Context, gameId uuid.UUID) (*games
 
 // Creates a new CDN site for the given game.
 func (c *Client) CreateGameCdnSite(ctx context.Context, gameId uuid.UUID, request *games.CreateGameCdnSiteRequest) (*games.CreateGameCdnSiteResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/cdn/sites", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/cdn/sites", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

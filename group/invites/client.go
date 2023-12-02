@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
 	group "github.com/rivet-gg/rivet-go/group"
@@ -38,11 +38,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 //
 // Provided by `rivet.api.group#CreateInviteResponse$code`.
 func (c *Client) GetInvite(ctx context.Context, groupInviteCode string) (*group.GetInviteResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"invites/%v", groupInviteCode)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/invites/%v", groupInviteCode)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -119,11 +119,11 @@ func (c *Client) GetInvite(ctx context.Context, groupInviteCode string) (*group.
 //
 // Provided by `rivet.api.group#CreateInviteResponse$code`.
 func (c *Client) ConsumeInvite(ctx context.Context, groupInviteCode string) (*group.ConsumeInviteResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"invites/%v/consume", groupInviteCode)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/invites/%v/consume", groupInviteCode)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -198,11 +198,11 @@ func (c *Client) ConsumeInvite(ctx context.Context, groupInviteCode string) (*gr
 
 // Creates a group invite. Can be shared with other identities to let them join this group.
 func (c *Client) CreateInvite(ctx context.Context, groupId uuid.UUID, request *group.CreateInviteRequest) (*group.CreateInviteResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/invites", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/invites", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

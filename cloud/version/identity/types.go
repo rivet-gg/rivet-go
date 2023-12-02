@@ -3,7 +3,7 @@
 package identity
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 )
 
 // Identity configuration for a given version.

@@ -3,7 +3,7 @@
 package client
 
 import (
-	chatclient "github.com/rivet-gg/rivet-go/chat/client"
+	adminclient "github.com/rivet-gg/rivet-go/admin/client"
 	cloudclient "github.com/rivet-gg/rivet-go/cloud/client"
 	core "github.com/rivet-gg/rivet-go/core"
 	groupclient "github.com/rivet-gg/rivet-go/group/client"
@@ -19,7 +19,7 @@ type Client struct {
 	httpClient core.HTTPClient
 	header     http.Header
 
-	Chat       *chatclient.Client
+	Admin      *adminclient.Client
 	Cloud      *cloudclient.Client
 	Group      *groupclient.Client
 	Identity   *identityclient.Client
@@ -37,7 +37,7 @@ func NewClient(opts ...core.ClientOption) *Client {
 		baseURL:    options.BaseURL,
 		httpClient: options.HTTPClient,
 		header:     options.ToHeader(),
-		Chat:       chatclient.NewClient(opts...),
+		Admin:      adminclient.NewClient(opts...),
 		Cloud:      cloudclient.NewClient(opts...),
 		Group:      groupclient.NewClient(opts...),
 		Identity:   identityclient.NewClient(opts...),

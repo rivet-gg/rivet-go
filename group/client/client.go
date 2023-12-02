@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
 	group "github.com/rivet-gg/rivet-go/group"
@@ -44,11 +44,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns a list of suggested groups.
 func (c *Client) ListSuggested(ctx context.Context, request *group.ListSuggestedRequest) (*group.ListSuggestedResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "groups"
+	endpointURL := baseURL + "/" + "group/groups"
 
 	queryParams := make(url.Values)
 	if request.WatchIndex != nil {
@@ -131,11 +131,11 @@ func (c *Client) ListSuggested(ctx context.Context, request *group.ListSuggested
 
 // Creates a new group.
 func (c *Client) Create(ctx context.Context, request *group.CreateRequest) (*group.CreateResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "groups"
+	endpointURL := baseURL + "/" + "group/groups"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -211,11 +211,11 @@ func (c *Client) Create(ctx context.Context, request *group.CreateRequest) (*gro
 // Prepares an avatar image upload.
 // Complete upload with `rivet.api.group#CompleteAvatarUpload`.
 func (c *Client) PrepareAvatarUpload(ctx context.Context, request *group.PrepareAvatarUploadRequest) (*group.PrepareAvatarUploadResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "groups/avatar-upload/prepare"
+	endpointURL := baseURL + "/" + "group/groups/avatar-upload/prepare"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -290,11 +290,11 @@ func (c *Client) PrepareAvatarUpload(ctx context.Context, request *group.Prepare
 
 // Validate contents of group profile. Use to provide immediate feedback on profile changes before committing them.
 func (c *Client) ValidateProfile(ctx context.Context, request *group.ValidateProfileRequest) (*group.ValidateProfileResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "groups/profile/validate"
+	endpointURL := baseURL + "/" + "group/groups/profile/validate"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -369,11 +369,11 @@ func (c *Client) ValidateProfile(ctx context.Context, request *group.ValidatePro
 
 // Fuzzy search for groups.
 func (c *Client) Search(ctx context.Context, request *group.SearchRequest) (*group.SearchResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "groups/search"
+	endpointURL := baseURL + "/" + "group/groups/search"
 
 	queryParams := make(url.Values)
 	queryParams.Add("query", fmt.Sprintf("%v", request.Query))
@@ -462,11 +462,11 @@ func (c *Client) Search(ctx context.Context, request *group.SearchRequest) (*gro
 // process completes.
 // Call `rivet.api.group#PrepareAvatarUpload` first.
 func (c *Client) CompleteAvatarUpload(ctx context.Context, groupId uuid.UUID, uploadId uuid.UUID) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/avatar-upload/%v/complete", groupId, uploadId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/avatar-upload/%v/complete", groupId, uploadId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -540,11 +540,11 @@ func (c *Client) CompleteAvatarUpload(ctx context.Context, groupId uuid.UUID, up
 
 // Returns a group's bans. Must have valid permissions to view.
 func (c *Client) GetBans(ctx context.Context, groupId uuid.UUID, request *group.GetBansRequest) (*group.GetBansResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/bans", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/bans", groupId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -633,11 +633,11 @@ func (c *Client) GetBans(ctx context.Context, groupId uuid.UUID, request *group.
 
 // Bans an identity from a group. Must be the owner of the group to perform this action. The banned identity will no longer be able to create a join request or use a group invite.
 func (c *Client) BanIdentity(ctx context.Context, groupId uuid.UUID, identityId uuid.UUID) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/bans/%v", groupId, identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/bans/%v", groupId, identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -711,11 +711,11 @@ func (c *Client) BanIdentity(ctx context.Context, groupId uuid.UUID, identityId 
 
 // Unbans an identity from a group. Must be the owner of the group to perform this action.
 func (c *Client) UnbanIdentity(ctx context.Context, groupId uuid.UUID, identityId uuid.UUID) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/bans/%v", groupId, identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/bans/%v", groupId, identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -789,11 +789,11 @@ func (c *Client) UnbanIdentity(ctx context.Context, groupId uuid.UUID, identityI
 
 // Returns a group's join requests. Must have valid permissions to view.
 func (c *Client) GetJoinRequests(ctx context.Context, groupId uuid.UUID, request *group.GetJoinRequestsRequest) (*group.GetJoinRequestsResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/join-requests", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/join-requests", groupId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -882,11 +882,11 @@ func (c *Client) GetJoinRequests(ctx context.Context, groupId uuid.UUID, request
 
 // Kicks an identity from a group. Must be the owner of the group to perform this action.
 func (c *Client) KickMember(ctx context.Context, groupId uuid.UUID, identityId uuid.UUID) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/kick/%v", groupId, identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/kick/%v", groupId, identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -960,11 +960,11 @@ func (c *Client) KickMember(ctx context.Context, groupId uuid.UUID, identityId u
 
 // Leaves a group.
 func (c *Client) Leave(ctx context.Context, groupId uuid.UUID) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/leave", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/leave", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1038,11 +1038,11 @@ func (c *Client) Leave(ctx context.Context, groupId uuid.UUID) error {
 
 // Returns a group's members.
 func (c *Client) GetMembers(ctx context.Context, groupId uuid.UUID, request *group.GetMembersRequest) (*group.GetMembersResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/members", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/members", groupId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -1131,11 +1131,11 @@ func (c *Client) GetMembers(ctx context.Context, groupId uuid.UUID, request *gro
 
 // Returns a group profile.
 func (c *Client) GetProfile(ctx context.Context, groupId uuid.UUID, request *group.GetProfileRequest) (*group.GetProfileResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/profile", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/profile", groupId)
 
 	queryParams := make(url.Values)
 	if request.WatchIndex != nil {
@@ -1217,11 +1217,11 @@ func (c *Client) GetProfile(ctx context.Context, groupId uuid.UUID, request *gro
 }
 
 func (c *Client) UpdateProfile(ctx context.Context, groupId uuid.UUID, request *group.UpdateProfileRequest) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/profile", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/profile", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1294,11 +1294,11 @@ func (c *Client) UpdateProfile(ctx context.Context, groupId uuid.UUID, request *
 }
 
 func (c *Client) GetSummary(ctx context.Context, groupId uuid.UUID) (*group.GetSummaryResponse, error) {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/summary", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/summary", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1373,11 +1373,11 @@ func (c *Client) GetSummary(ctx context.Context, groupId uuid.UUID) (*group.GetS
 
 // Transfers ownership of a group to another identity.
 func (c *Client) TransferOwnership(ctx context.Context, groupId uuid.UUID, request *group.TransferOwnershipRequest) error {
-	baseURL := "https://group.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/transfer-owner", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"group/groups/%v/transfer-owner", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

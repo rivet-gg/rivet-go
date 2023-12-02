@@ -35,11 +35,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 func (c *Client) Prepare(ctx context.Context) (*devices.PrepareDeviceLinkResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "devices/links"
+	endpointURL := baseURL + "/" + "cloud/devices/links"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -113,11 +113,11 @@ func (c *Client) Prepare(ctx context.Context) (*devices.PrepareDeviceLinkRespons
 }
 
 func (c *Client) Get(ctx context.Context, request *devices.GetDeviceLinkRequest) (*devices.GetDeviceLinkResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "devices/links"
+	endpointURL := baseURL + "/" + "cloud/devices/links"
 
 	queryParams := make(url.Values)
 	queryParams.Add("device_link_token", fmt.Sprintf("%v", request.DeviceLinkToken))

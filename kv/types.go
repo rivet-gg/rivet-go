@@ -3,7 +3,7 @@
 package kv
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 )
 
 type DeleteOperationRequest struct {
@@ -53,4 +53,4 @@ type PutEntry struct {
 // A JSON object stored in the KV database.
 // A `null` value indicates the entry is deleted.
 // Maximum length of 262,144 bytes when encoded.
-type Value = any
+type Value = interface{}

@@ -3,7 +3,7 @@
 package games
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	cloud "github.com/rivet-gg/rivet-go/cloud"
 	upload "github.com/rivet-gg/rivet-go/upload"
 )

@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
 	identity "github.com/rivet-gg/rivet-go/identity"
@@ -50,11 +50,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 // Storing Token
 // `identity_token` should be stored in some form of persistent storage. The token should be read from storage and passed to `Setup` every time the client starts.
 func (c *Client) Setup(ctx context.Context, request *identity.SetupRequest) (*identity.SetupResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities"
+	endpointURL := baseURL + "/" + "identity/identities"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -129,11 +129,11 @@ func (c *Client) Setup(ctx context.Context, request *identity.SetupRequest) (*id
 
 // Fetches an identity profile.
 func (c *Client) GetProfile(ctx context.Context, identityId uuid.UUID, request *identity.GetProfileRequest) (*identity.GetProfileResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/profile", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/profile", identityId)
 
 	queryParams := make(url.Values)
 	queryParams.Add("watch_index", fmt.Sprintf("%v", request.WatchIndex))
@@ -214,11 +214,11 @@ func (c *Client) GetProfile(ctx context.Context, identityId uuid.UUID, request *
 
 // Fetches the current identity's profile.
 func (c *Client) GetSelfProfile(ctx context.Context, request *identity.GetSelfProfileRequest) (*identity.GetProfileResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/profile"
+	endpointURL := baseURL + "/" + "identity/identities/self/profile"
 
 	queryParams := make(url.Values)
 	queryParams.Add("watch_index", fmt.Sprintf("%v", request.WatchIndex))
@@ -299,11 +299,11 @@ func (c *Client) GetSelfProfile(ctx context.Context, request *identity.GetSelfPr
 
 // Fetches a list of identity handles.
 func (c *Client) GetHandles(ctx context.Context, request *identity.GetHandlesRequest) (*identity.GetHandlesResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/batch/handle"
+	endpointURL := baseURL + "/" + "identity/identities/batch/handle"
 
 	queryParams := make(url.Values)
 	for _, value := range request.IdentityIds {
@@ -386,11 +386,11 @@ func (c *Client) GetHandles(ctx context.Context, request *identity.GetHandlesReq
 
 // Fetches a list of identity summaries.
 func (c *Client) GetSummaries(ctx context.Context, request *identity.GetSummariesRequest) (*identity.GetSummariesResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/batch/summary"
+	endpointURL := baseURL + "/" + "identity/identities/batch/summary"
 
 	queryParams := make(url.Values)
 	for _, value := range request.IdentityIds {
@@ -473,11 +473,11 @@ func (c *Client) GetSummaries(ctx context.Context, request *identity.GetSummarie
 
 // Updates profile of the current identity.
 func (c *Client) UpdateProfile(ctx context.Context, request *identity.UpdateProfileRequest) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/profile"
+	endpointURL := baseURL + "/" + "identity/identities/self/profile"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -551,11 +551,11 @@ func (c *Client) UpdateProfile(ctx context.Context, request *identity.UpdateProf
 
 // Validate contents of identity profile. Use to provide immediate feedback on profile changes before committing them.
 func (c *Client) ValidateProfile(ctx context.Context, request *identity.ValidateProfileRequest) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/profile/validate"
+	endpointURL := baseURL + "/" + "identity/identities/self/profile/validate"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -629,11 +629,11 @@ func (c *Client) ValidateProfile(ctx context.Context, request *identity.Validate
 
 // Fuzzy search for identities.
 func (c *Client) Search(ctx context.Context, request *identity.SearchRequest) (*identity.SearchResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/search"
+	endpointURL := baseURL + "/" + "identity/identities/search"
 
 	queryParams := make(url.Values)
 	queryParams.Add("query", fmt.Sprintf("%v", request.Query))
@@ -720,11 +720,11 @@ func (c *Client) Search(ctx context.Context, request *identity.SearchRequest) (*
 
 // Sets the current identity's game activity. This activity will automatically be removed when the identity goes offline.
 func (c *Client) SetGameActivity(ctx context.Context, request *identity.SetGameActivityRequest) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/activity"
+	endpointURL := baseURL + "/" + "identity/identities/self/activity"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -798,11 +798,11 @@ func (c *Client) SetGameActivity(ctx context.Context, request *identity.SetGameA
 
 // Removes the current identity's game activity.
 func (c *Client) RemoveGameActivity(ctx context.Context) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/activity"
+	endpointURL := baseURL + "/" + "identity/identities/self/activity"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -876,11 +876,11 @@ func (c *Client) RemoveGameActivity(ctx context.Context) error {
 
 // Updates the current identity's status.
 func (c *Client) UpdateStatus(ctx context.Context, request *identity.UpdateStatusRequest) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/identities/self/status"
+	endpointURL := baseURL + "/" + "identity/identities/identities/self/status"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -954,11 +954,11 @@ func (c *Client) UpdateStatus(ctx context.Context, request *identity.UpdateStatu
 
 // Follows the given identity. In order for identities to be "friends", the other identity has to also follow this identity.
 func (c *Client) Follow(ctx context.Context, identityId uuid.UUID) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/follow", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/follow", identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1032,11 +1032,11 @@ func (c *Client) Follow(ctx context.Context, identityId uuid.UUID) error {
 
 // Unfollows the given identity.
 func (c *Client) Unfollow(ctx context.Context, identityId uuid.UUID) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/follow", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/follow", identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1110,11 +1110,11 @@ func (c *Client) Unfollow(ctx context.Context, identityId uuid.UUID) error {
 
 // Prepares an avatar image upload. Complete upload with `CompleteIdentityAvatarUpload`.
 func (c *Client) PrepareAvatarUpload(ctx context.Context, request *identity.PrepareAvatarUploadRequest) (*identity.PrepareAvatarUploadResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/avatar-upload/prepare"
+	endpointURL := baseURL + "/" + "identity/identities/avatar-upload/prepare"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1189,11 +1189,11 @@ func (c *Client) PrepareAvatarUpload(ctx context.Context, request *identity.Prep
 
 // Completes an avatar image upload. Must be called after the file upload process completes.
 func (c *Client) CompleteAvatarUpload(ctx context.Context, uploadId uuid.UUID) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/avatar-upload/%v/complete", uploadId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/avatar-upload/%v/complete", uploadId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1267,11 +1267,11 @@ func (c *Client) CompleteAvatarUpload(ctx context.Context, uploadId uuid.UUID) e
 
 // Completes an avatar image upload. Must be called after the file upload process completes.
 func (c *Client) SignupForBeta(ctx context.Context, request *identity.SignupForBetaRequest) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/beta-signup"
+	endpointURL := baseURL + "/" + "identity/identities/self/beta-signup"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1345,11 +1345,11 @@ func (c *Client) SignupForBeta(ctx context.Context, request *identity.SignupForB
 
 // Creates an abuse report for an identity.
 func (c *Client) Report(ctx context.Context, identityId uuid.UUID, request *identity.ReportRequest) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/report", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/report", identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1422,11 +1422,11 @@ func (c *Client) Report(ctx context.Context, identityId uuid.UUID, request *iden
 }
 
 func (c *Client) ListFollowers(ctx context.Context, identityId uuid.UUID, request *identity.ListFollowersRequest) (*identity.ListFollowersResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/followers", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/followers", identityId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -1511,11 +1511,11 @@ func (c *Client) ListFollowers(ctx context.Context, identityId uuid.UUID, reques
 }
 
 func (c *Client) ListFollowing(ctx context.Context, identityId uuid.UUID, request *identity.ListFollowingRequest) (*identity.ListFollowingResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/following", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/following", identityId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -1600,11 +1600,11 @@ func (c *Client) ListFollowing(ctx context.Context, identityId uuid.UUID, reques
 }
 
 func (c *Client) ListFriends(ctx context.Context, request *identity.ListFriendsRequest) (*identity.ListFriendsResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/friends"
+	endpointURL := baseURL + "/" + "identity/identities/self/friends"
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -1689,11 +1689,11 @@ func (c *Client) ListFriends(ctx context.Context, request *identity.ListFriendsR
 }
 
 func (c *Client) ListMutualFriends(ctx context.Context, identityId uuid.UUID, request *identity.ListMutualFriendsRequest) (*identity.ListMutualFriendsResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/%v/mutual-friends", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/%v/mutual-friends", identityId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -1778,11 +1778,11 @@ func (c *Client) ListMutualFriends(ctx context.Context, identityId uuid.UUID, re
 }
 
 func (c *Client) ListRecentFollowers(ctx context.Context, request *identity.ListRecentFollowersRequest) (*identity.ListRecentFollowersResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/recent-followers"
+	endpointURL := baseURL + "/" + "identity/identities/self/recent-followers"
 
 	queryParams := make(url.Values)
 	if request.Count != nil {
@@ -1867,11 +1867,11 @@ func (c *Client) ListRecentFollowers(ctx context.Context, request *identity.List
 }
 
 func (c *Client) IgnoreRecentFollower(ctx context.Context, identityId uuid.UUID) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"identities/self/recent-followers/%v/ignore", identityId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"identity/identities/self/recent-followers/%v/ignore", identityId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1944,11 +1944,11 @@ func (c *Client) IgnoreRecentFollower(ctx context.Context, identityId uuid.UUID)
 }
 
 func (c *Client) MarkDeletion(ctx context.Context) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/delete-request"
+	endpointURL := baseURL + "/" + "identity/identities/self/delete-request"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -2021,11 +2021,11 @@ func (c *Client) MarkDeletion(ctx context.Context) error {
 }
 
 func (c *Client) UnmarkDeletion(ctx context.Context) error {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "identities/self/delete-request"
+	endpointURL := baseURL + "/" + "identity/identities/self/delete-request"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

@@ -3,7 +3,7 @@
 package namespaces
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	cloud "github.com/rivet-gg/rivet-go/cloud"
 	matchmaker "github.com/rivet-gg/rivet-go/cloud/version/matchmaker"

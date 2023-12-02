@@ -5,31 +5,34 @@ package matchmaker
 import (
 	fmt "fmt"
 	captcha "github.com/rivet-gg/rivet-go/captcha"
-	core "github.com/rivet-gg/rivet-go/core"
 )
 
 type CreateLobbyRequest struct {
-	GameMode         string                         `json:"game_mode"`
-	Region           *core.Optional[string]         `json:"region,omitempty"`
-	Captcha          *core.Optional[captcha.Config] `json:"captcha,omitempty"`
-	Publicity        CustomLobbyPublicity           `json:"publicity,omitempty"`
-	LobbyConfig      *core.Optional[any]            `json:"lobby_config,omitempty"`
-	VerificationData *core.Optional[any]            `json:"verification_data,omitempty"`
+	GameMode         string                `json:"game_mode"`
+	Region           *string               `json:"region,omitempty"`
+	Publicity        *CustomLobbyPublicity `json:"publicity,omitempty"`
+	Tags             map[string]string     `json:"tags,omitempty"`
+	MaxPlayers       *int                  `json:"max_players,omitempty"`
+	LobbyConfig      interface{}           `json:"lobby_config,omitempty"`
+	Captcha          *captcha.Config       `json:"captcha,omitempty"`
+	VerificationData interface{}           `json:"verification_data,omitempty"`
 }
 
 type FindLobbyRequest struct {
-	Origin                 *string                        `json:"-"`
-	GameModes              []string                       `json:"game_modes,omitempty"`
-	Regions                []string                       `json:"regions,omitempty"`
-	PreventAutoCreateLobby *core.Optional[bool]           `json:"prevent_auto_create_lobby,omitempty"`
-	Captcha                *core.Optional[captcha.Config] `json:"captcha,omitempty"`
-	VerificationData       *core.Optional[any]            `json:"verification_data,omitempty"`
+	Origin                 *string           `json:"-"`
+	GameModes              []string          `json:"game_modes,omitempty"`
+	Regions                []string          `json:"regions,omitempty"`
+	PreventAutoCreateLobby *bool             `json:"prevent_auto_create_lobby,omitempty"`
+	Tags                   map[string]string `json:"tags,omitempty"`
+	MaxPlayers             *int              `json:"max_players,omitempty"`
+	Captcha                *captcha.Config   `json:"captcha,omitempty"`
+	VerificationData       interface{}       `json:"verification_data,omitempty"`
 }
 
 type JoinLobbyRequest struct {
-	LobbyId          string                         `json:"lobby_id"`
-	Captcha          *core.Optional[captcha.Config] `json:"captcha,omitempty"`
-	VerificationData *core.Optional[any]            `json:"verification_data,omitempty"`
+	LobbyId          string          `json:"lobby_id"`
+	Captcha          *captcha.Config `json:"captcha,omitempty"`
+	VerificationData interface{}     `json:"verification_data,omitempty"`
 }
 
 type ListLobbiesRequest struct {
@@ -38,12 +41,6 @@ type ListLobbiesRequest struct {
 
 type SetLobbyClosedRequest struct {
 	IsClosed bool `json:"is_closed"`
-}
-
-// Methods to verify a captcha
-type Config struct {
-	Hcaptcha  *ConfigHcaptcha  `json:"hcaptcha,omitempty"`
-	Turnstile *ConfigTurnstile `json:"turnstile,omitempty"`
 }
 
 type CustomLobbyPublicity string

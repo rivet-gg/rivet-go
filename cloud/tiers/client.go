@@ -34,11 +34,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns all available region tiers.
 func (c *Client) GetRegionTiers(ctx context.Context) (*cloud.GetRegionTiersResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "region-tiers"
+	endpointURL := baseURL + "/" + "cloud/region-tiers"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

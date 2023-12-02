@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	games "github.com/rivet-gg/rivet-go/cloud/games"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Creates a new game version.
 func (c *Client) CreateGameVersion(ctx context.Context, gameId uuid.UUID, request *games.CreateGameVersionRequest) (*games.CreateGameVersionResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/versions", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/versions", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -115,11 +115,11 @@ func (c *Client) CreateGameVersion(ctx context.Context, gameId uuid.UUID, reques
 
 // Validates information used to create a new game version.
 func (c *Client) ValidateGameVersion(ctx context.Context, gameId uuid.UUID, request *games.ValidateGameVersionRequest) (*games.ValidateGameVersionResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/versions/validate", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/versions/validate", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -194,11 +194,11 @@ func (c *Client) ValidateGameVersion(ctx context.Context, gameId uuid.UUID, requ
 
 // Returns a game version by its version ID.
 func (c *Client) GetGameVersionById(ctx context.Context, gameId uuid.UUID, versionId uuid.UUID) (*games.GetGameVersionByIdResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/versions/%v", gameId, versionId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/versions/%v", gameId, versionId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

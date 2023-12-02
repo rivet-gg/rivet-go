@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns all events relative to the current identity.
 func (c *Client) Watch(ctx context.Context, request *identity.WatchEventsRequest) (*identity.WatchEventsResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "events/live"
+	endpointURL := baseURL + "/" + "identity/events/live"
 
 	queryParams := make(url.Values)
 	queryParams.Add("watch_index", fmt.Sprintf("%v", request.WatchIndex))

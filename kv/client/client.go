@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns a specific key-value entry by key.
 func (c *Client) Get(ctx context.Context, request *kv.GetOperationRequest) (*kv.GetResponse, error) {
-	baseURL := "https://kv.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "entries"
+	endpointURL := baseURL + "/" + "kv/entries"
 
 	queryParams := make(url.Values)
 	queryParams.Add("key", fmt.Sprintf("%v", request.Key))
@@ -127,11 +127,11 @@ func (c *Client) Get(ctx context.Context, request *kv.GetOperationRequest) (*kv.
 
 // Puts (sets or overwrites) a key-value entry by key.
 func (c *Client) Put(ctx context.Context, request *kv.PutRequest) error {
-	baseURL := "https://kv.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "entries"
+	endpointURL := baseURL + "/" + "kv/entries"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -205,11 +205,11 @@ func (c *Client) Put(ctx context.Context, request *kv.PutRequest) error {
 
 // Deletes a key-value entry by key.
 func (c *Client) Delete(ctx context.Context, request *kv.DeleteOperationRequest) error {
-	baseURL := "https://kv.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "entries"
+	endpointURL := baseURL + "/" + "kv/entries"
 
 	queryParams := make(url.Values)
 	queryParams.Add("key", fmt.Sprintf("%v", request.Key))
@@ -292,11 +292,11 @@ func (c *Client) Delete(ctx context.Context, request *kv.DeleteOperationRequest)
 
 // Gets multiple key-value entries by key(s).
 func (c *Client) GetBatch(ctx context.Context, request *kv.GetBatchRequest) (*kv.GetBatchResponse, error) {
-	baseURL := "https://kv.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "entries/batch"
+	endpointURL := baseURL + "/" + "kv/entries/batch"
 
 	queryParams := make(url.Values)
 	for _, value := range request.Keys {
@@ -385,11 +385,11 @@ func (c *Client) GetBatch(ctx context.Context, request *kv.GetBatchRequest) (*kv
 
 // Puts (sets or overwrites) multiple key-value entries by key(s).
 func (c *Client) PutBatch(ctx context.Context, request *kv.PutBatchRequest) error {
-	baseURL := "https://kv.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "entries/batch"
+	endpointURL := baseURL + "/" + "kv/entries/batch"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -463,11 +463,11 @@ func (c *Client) PutBatch(ctx context.Context, request *kv.PutBatchRequest) erro
 
 // Deletes multiple key-value entries by key(s).
 func (c *Client) DeleteBatch(ctx context.Context, request *kv.DeleteBatchRequest) error {
-	baseURL := "https://kv.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "entries/batch"
+	endpointURL := baseURL + "/" + "kv/entries/batch"
 
 	queryParams := make(url.Values)
 	for _, value := range request.Keys {

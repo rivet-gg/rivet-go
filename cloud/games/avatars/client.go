@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	games "github.com/rivet-gg/rivet-go/cloud/games"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Lists custom avatars for the given game.
 func (c *Client) ListGameCustomAvatars(ctx context.Context, gameId uuid.UUID) (*games.ListGameCustomAvatarsResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/avatars", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/avatars", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -116,11 +116,11 @@ func (c *Client) ListGameCustomAvatars(ctx context.Context, gameId uuid.UUID) (*
 // Prepares a custom avatar image upload.
 // Complete upload with `rivet.api.cloud#CompleteCustomAvatarUpload`.
 func (c *Client) PrepareCustomAvatarUpload(ctx context.Context, gameId uuid.UUID, request *games.PrepareCustomAvatarUploadRequest) (*games.PrepareCustomAvatarUploadResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/prepare", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/prepare", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -195,11 +195,11 @@ func (c *Client) PrepareCustomAvatarUpload(ctx context.Context, gameId uuid.UUID
 
 // Completes a custom avatar image upload. Must be called after the file upload process completes.
 func (c *Client) CompleteCustomAvatarUpload(ctx context.Context, gameId uuid.UUID, uploadId uuid.UUID) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/avatar-upload/%v/complete", gameId, uploadId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/avatar-upload/%v/complete", gameId, uploadId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

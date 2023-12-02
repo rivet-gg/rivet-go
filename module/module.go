@@ -3,5 +3,5 @@
 package module
 
 type CallResponse struct {
-	Data any `json:"data,omitempty"`
+	Data interface{} `json:"data,omitempty"`
 }

@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
 	matchmaker "github.com/rivet-gg/rivet-go/matchmaker"
@@ -37,11 +37,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Marks the current lobby as ready to accept connections.  Players will not be able to connect to this lobby until the  lobby is flagged as ready.
 func (c *Client) Ready(ctx context.Context) error {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/ready"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/ready"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -118,11 +118,11 @@ func (c *Client) Ready(ctx context.Context) error {
 // after setting the lobby to closed).
 // Does not shutdown the lobby.
 func (c *Client) SetClosed(ctx context.Context, request *matchmaker.SetLobbyClosedRequest) error {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/closed"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/closed"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -194,12 +194,12 @@ func (c *Client) SetClosed(ctx context.Context, request *matchmaker.SetLobbyClos
 	return nil
 }
 
-func (c *Client) SetState(ctx context.Context, request *any) error {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+func (c *Client) SetState(ctx context.Context, request interface{}) error {
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/state"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/state"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -271,12 +271,12 @@ func (c *Client) SetState(ctx context.Context, request *any) error {
 	return nil
 }
 
-func (c *Client) GetState(ctx context.Context, lobbyId uuid.UUID) (*any, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+func (c *Client) GetState(ctx context.Context, lobbyId uuid.UUID) (interface{}, error) {
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"lobbies/%v/state", lobbyId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"matchmaker/lobbies/%v/state", lobbyId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -332,7 +332,7 @@ func (c *Client) GetState(ctx context.Context, lobbyId uuid.UUID) (*any, error) 
 		return apiError
 	}
 
-	var response *any
+	var response interface{}
 	if err := core.DoRequest(
 		ctx,
 		c.httpClient,
@@ -353,11 +353,11 @@ func (c *Client) GetState(ctx context.Context, lobbyId uuid.UUID) (*any, error) 
 // If a lobby is not found and `prevent_auto_create_lobby` is `true`,
 // a new lobby will be created.
 func (c *Client) Find(ctx context.Context, request *matchmaker.FindLobbyRequest) (*matchmaker.FindLobbyResponse, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/find"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/find"
 
 	headers := c.header.Clone()
 	if request.Origin != nil {
@@ -439,11 +439,11 @@ func (c *Client) Find(ctx context.Context, request *matchmaker.FindLobbyRequest)
 // This request will use the direct player count configured for the
 // lobby group.
 func (c *Client) Join(ctx context.Context, request *matchmaker.JoinLobbyRequest) (*matchmaker.JoinLobbyResponse, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/join"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/join"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -518,11 +518,11 @@ func (c *Client) Join(ctx context.Context, request *matchmaker.JoinLobbyRequest)
 
 // Creates a custom lobby.
 func (c *Client) Create(ctx context.Context, request *matchmaker.CreateLobbyRequest) (*matchmaker.CreateLobbyResponse, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/create"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/create"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -597,11 +597,11 @@ func (c *Client) Create(ctx context.Context, request *matchmaker.CreateLobbyRequ
 
 // Lists all open lobbies.
 func (c *Client) List(ctx context.Context, request *matchmaker.ListLobbiesRequest) (*matchmaker.ListLobbiesResponse, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "lobbies/list"
+	endpointURL := baseURL + "/" + "matchmaker/lobbies/list"
 
 	queryParams := make(url.Values)
 	if request.IncludeState != nil {

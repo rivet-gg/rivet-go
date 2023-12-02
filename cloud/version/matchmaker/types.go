@@ -4,7 +4,7 @@ package matchmaker
 
 import (
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 )
 
 // Matchmaker captcha configuration.
@@ -53,11 +53,7 @@ func (c CaptchaHcaptchaLevel) Ptr() *CaptchaHcaptchaLevel {
 
 // Turnstile captcha configuration.
 type CaptchaTurnstile struct {
-	Domains map[string]*CaptchaTurnstileDomain `json:"domains,omitempty"`
-}
-
-// Turnstile domain configuration.
-type CaptchaTurnstileDomain struct {
+	SiteKey   string `json:"site_key"`
 	SecretKey string `json:"secret_key"`
 }
 
@@ -147,34 +143,45 @@ func (p ProxyKind) Ptr() *ProxyKind {
 
 // A game mode.
 type GameMode struct {
-	Regions          map[string]*GameModeRegion `json:"regions,omitempty"`
-	MaxPlayers       *int                       `json:"max_players,omitempty"`
-	MaxPlayersDirect *int                       `json:"max_players_direct,omitempty"`
-	MaxPlayersParty  *int                       `json:"max_players_party,omitempty"`
-	Docker           *GameModeRuntimeDocker     `json:"docker,omitempty"`
-	Listable         *bool                      `json:"listable,omitempty"`
-	FindConfig       *GameModeFindConfig        `json:"find_config,omitempty"`
-	JoinConfig       *GameModeJoinConfig        `json:"join_config,omitempty"`
-	CreateConfig     *GameModeCreateConfig      `json:"create_config,omitempty"`
-	Tier             *string                    `json:"tier,omitempty"`
-	IdleLobbies      *GameModeIdleLobbiesConfig `json:"idle_lobbies,omitempty"`
+	Regions                map[string]*GameModeRegion `json:"regions,omitempty"`
+	MaxPlayers             *int                       `json:"max_players,omitempty"`
+	MaxPlayersDirect       *int                       `json:"max_players_direct,omitempty"`
+	MaxPlayersParty        *int                       `json:"max_players_party,omitempty"`
+	Docker                 *GameModeRuntimeDocker     `json:"docker,omitempty"`
+	Listable               *bool                      `json:"listable,omitempty"`
+	Taggable               *bool                      `json:"taggable,omitempty"`
+	AllowDynamicMaxPlayers *bool                      `json:"allow_dynamic_max_players,omitempty"`
+	Actions                *GameModeActions           `json:"actions,omitempty"`
+	Tier                   *string                    `json:"tier,omitempty"`
+	IdleLobbies            *GameModeIdleLobbiesConfig `json:"idle_lobbies,omitempty"`
+}
+
+// Configuration for the connection types allowed for a game mode.
+type GameModeActions struct {
+	Find   *GameModeFindConfig   `json:"find,omitempty"`
+	Join   *GameModeJoinConfig   `json:"join,omitempty"`
+	Create *GameModeCreateConfig `json:"create,omitempty"`
 }
 
 // Configures the requirements and authentication for the /create endpoint. If this value is not set in the config, the /create endpoint is NOT enabled.
 type GameModeCreateConfig struct {
-	IdentityRequirement   GameModeIdentityRequirement `json:"identity_requirement,omitempty"`
-	VerificationConfig    *GameModeVerificationConfig `json:"verification_config,omitempty"`
-	EnablePublic          bool                        `json:"enable_public"`
-	EnablePrivate         bool                        `json:"enable_private"`
-	MaxLobbiesPerIdentity *int                        `json:"max_lobbies_per_identity,omitempty"`
+	// Sets whether or not the /create endpoint is enabled.
+	Enabled             bool                         `json:"enabled"`
+	IdentityRequirement *GameModeIdentityRequirement `json:"identity_requirement,omitempty"`
+	Verification        *GameModeVerificationConfig  `json:"verification,omitempty"`
+	// Defaults to false when unset.
+	EnablePublic *bool `json:"enable_public,omitempty"`
+	// Defaults to true when unset.
+	EnablePrivate         *bool `json:"enable_private,omitempty"`
+	MaxLobbiesPerIdentity *int  `json:"max_lobbies_per_identity,omitempty"`
 }
 
 // Configures the requirements and authentication for the /find endpoint. If this value is not set in the config, the /find endpoint is still enabled.
 type GameModeFindConfig struct {
 	// Sets whether or not the /find endpoint is enabled.
-	Enabled             bool                        `json:"enabled"`
-	IdentityRequirement GameModeIdentityRequirement `json:"identity_requirement,omitempty"`
-	VerificationConfig  *GameModeVerificationConfig `json:"verification_config,omitempty"`
+	Enabled             bool                         `json:"enabled"`
+	IdentityRequirement *GameModeIdentityRequirement `json:"identity_requirement,omitempty"`
+	Verification        *GameModeVerificationConfig  `json:"verification,omitempty"`
 }
 
 // The registration requirement for a user when joining/finding/creating a lobby. "None" allows for connections without an identity.
@@ -212,9 +219,9 @@ type GameModeIdleLobbiesConfig struct {
 // Configures the requirements and authentication for the /join endpoint. If this value is not set in the config, the /join endpoint is still enabled.
 type GameModeJoinConfig struct {
 	// Sets whether or not the /join endpoint is enabled.
-	Enabled             bool                        `json:"enabled"`
-	IdentityRequirement GameModeIdentityRequirement `json:"identity_requirement,omitempty"`
-	VerificationConfig  *GameModeVerificationConfig `json:"verification_config,omitempty"`
+	Enabled             bool                         `json:"enabled"`
+	IdentityRequirement *GameModeIdentityRequirement `json:"identity_requirement,omitempty"`
+	Verification        *GameModeVerificationConfig  `json:"verification,omitempty"`
 }
 
 // A game mode region.

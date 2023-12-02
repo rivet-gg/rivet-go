@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	cloud "github.com/rivet-gg/rivet-go/cloud"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns performance information about a Rivet Ray.
 func (c *Client) GetRayPerfLogs(ctx context.Context, rayId uuid.UUID) (*cloud.GetRayPerfLogsResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"rays/%v/perf", rayId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/rays/%v/perf", rayId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

@@ -23,7 +23,7 @@ type ErrorBody struct {
 }
 
 // Unstructured metadata relating to an error. Must be manually parsed.
-type ErrorMetadata = any
+type ErrorMetadata = interface{}
 
 // A human readable short identifier used to references resources. Different than a `uuid` because this is intended to be human readable. Different than `DisplayName` because this should not include special characters and be short.
 type Identifier = string

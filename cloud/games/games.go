@@ -3,9 +3,10 @@
 package games
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	cloud "github.com/rivet-gg/rivet-go/cloud"
+	game "github.com/rivet-gg/rivet-go/game"
 	group "github.com/rivet-gg/rivet-go/group"
 	upload "github.com/rivet-gg/rivet-go/upload"
 )
@@ -38,7 +39,7 @@ type GameBannerUploadPrepareRequest struct {
 	// The MIME type of the game banner.
 	Mime *string `json:"mime,omitempty"`
 	// Unsigned 64 bit integer.
-	ContentLength *int64 `json:"content_length,omitempty"`
+	ContentLength int64 `json:"content_length"`
 }
 
 type GameBannerUploadPrepareResponse struct {
@@ -67,9 +68,9 @@ type GetGameByIdResponse struct {
 
 type GetGamesResponse struct {
 	// A list of game summaries.
-	Games []*GameSummary `json:"games,omitempty"`
+	Games []*game.Summary `json:"games,omitempty"`
 	// A list of group summaries.
-	Groups []*group.Handle        `json:"groups,omitempty"`
+	Groups []*group.Summary       `json:"groups,omitempty"`
 	Watch  *rivetgo.WatchResponse `json:"watch,omitempty"`
 }
 

@@ -3,7 +3,7 @@
 package games
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	cloud "github.com/rivet-gg/rivet-go/cloud"
 	upload "github.com/rivet-gg/rivet-go/upload"
 )
@@ -19,7 +19,7 @@ type PrepareCustomAvatarUploadRequest struct {
 	// The MIME type of the custom avatar.
 	Mime *string `json:"mime,omitempty"`
 	// Unsigned 64 bit integer.
-	ContentLength *int64 `json:"content_length,omitempty"`
+	ContentLength int64 `json:"content_length"`
 }
 
 type PrepareCustomAvatarUploadResponse struct {

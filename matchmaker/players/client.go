@@ -62,11 +62,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 // once the socket opens. As mentioned above, nothing else should happen until
 // the player token is validated.
 func (c *Client) Connected(ctx context.Context, request *matchmaker.PlayerConnectedRequest) error {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "players/connected"
+	endpointURL := baseURL + "/" + "matchmaker/players/connected"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -140,11 +140,11 @@ func (c *Client) Connected(ctx context.Context, request *matchmaker.PlayerConnec
 
 // Marks a player as disconnected. # Ghost Players If players are not marked as disconnected, lobbies will result with "ghost players" that the matchmaker thinks exist but are no longer connected to the lobby.
 func (c *Client) Disconnected(ctx context.Context, request *matchmaker.PlayerDisconnectedRequest) error {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "players/disconnected"
+	endpointURL := baseURL + "/" + "matchmaker/players/disconnected"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -218,11 +218,11 @@ func (c *Client) Disconnected(ctx context.Context, request *matchmaker.PlayerDis
 
 // Gives matchmaker statistics about the players in game.
 func (c *Client) GetStatistics(ctx context.Context) (*matchmaker.GetStatisticsResponse, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "players/statistics"
+	endpointURL := baseURL + "/" + "matchmaker/players/statistics"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

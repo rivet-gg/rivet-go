@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	games "github.com/rivet-gg/rivet-go/cloud/games"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -37,11 +37,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns a list of games in which the current identity is a group member of its development team.
 func (c *Client) GetGames(ctx context.Context, request *games.GetGamesRequest) (*games.GetGamesResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "games"
+	endpointURL := baseURL + "/" + "cloud/games"
 
 	queryParams := make(url.Values)
 	if request.WatchIndex != nil {
@@ -124,11 +124,11 @@ func (c *Client) GetGames(ctx context.Context, request *games.GetGamesRequest) (
 
 // Creates a new game.
 func (c *Client) CreateGame(ctx context.Context, request *games.CreateGameRequest) (*games.CreateGameResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "games"
+	endpointURL := baseURL + "/" + "cloud/games"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -203,11 +203,11 @@ func (c *Client) CreateGame(ctx context.Context, request *games.CreateGameReques
 
 // Validates information used to create a new game.
 func (c *Client) ValidateGame(ctx context.Context, request *games.ValidateGameRequest) (*games.ValidateGameResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "games/validate"
+	endpointURL := baseURL + "/" + "cloud/games/validate"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -282,11 +282,11 @@ func (c *Client) ValidateGame(ctx context.Context, request *games.ValidateGameRe
 
 // Returns a game by its game id.
 func (c *Client) GetGameById(ctx context.Context, gameId uuid.UUID, request *games.GetGameByIdRequest) (*games.GetGameByIdResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v", gameId)
 
 	queryParams := make(url.Values)
 	if request.WatchIndex != nil {
@@ -369,11 +369,11 @@ func (c *Client) GetGameById(ctx context.Context, gameId uuid.UUID, request *gam
 
 // Prepares a game banner image upload.
 func (c *Client) GameBannerUploadPrepare(ctx context.Context, gameId uuid.UUID, request *games.GameBannerUploadPrepareRequest) (*games.GameBannerUploadPrepareResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/banner-upload/prepare", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/banner-upload/prepare", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -448,11 +448,11 @@ func (c *Client) GameBannerUploadPrepare(ctx context.Context, gameId uuid.UUID, 
 
 // Completes an game banner image upload. Must be called after the file upload process completes.
 func (c *Client) GameBannerUploadComplete(ctx context.Context, gameId uuid.UUID, uploadId uuid.UUID) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/banner-upload/%v/complete", gameId, uploadId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/banner-upload/%v/complete", gameId, uploadId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -526,11 +526,11 @@ func (c *Client) GameBannerUploadComplete(ctx context.Context, gameId uuid.UUID,
 
 // Prepares a game logo image upload.
 func (c *Client) GameLogoUploadPrepare(ctx context.Context, gameId uuid.UUID, request *games.GameLogoUploadPrepareRequest) (*games.GameLogoUploadPrepareResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/logo-upload/prepare", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/logo-upload/prepare", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -605,11 +605,11 @@ func (c *Client) GameLogoUploadPrepare(ctx context.Context, gameId uuid.UUID, re
 
 // Completes a game logo image upload. Must be called after the file upload process completes.
 func (c *Client) GameLogoUploadComplete(ctx context.Context, gameId uuid.UUID, uploadId uuid.UUID) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/logo-upload/%v/complete", gameId, uploadId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/logo-upload/%v/complete", gameId, uploadId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

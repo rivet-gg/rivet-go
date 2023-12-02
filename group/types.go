@@ -4,9 +4,10 @@ package group
 
 import (
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
-	identity "github.com/rivet-gg/rivet-go/identity"
+	group "github.com/rivet-gg/rivet-go/common/group"
+	identity "github.com/rivet-gg/rivet-go/common/identity"
 	time "time"
 )
 
@@ -62,25 +63,6 @@ type BannedIdentity struct {
 	BanTs time.Time `json:"ban_ts"`
 }
 
-// External links for this group.
-type ExternalLinks struct {
-	// A link to this group's profile page.
-	Profile string `json:"profile"`
-	// A link to this group's chat page.
-	Chat string `json:"chat"`
-}
-
-// A group handle.
-type Handle struct {
-	GroupId     uuid.UUID           `json:"group_id"`
-	DisplayName rivetgo.DisplayName `json:"display_name"`
-	// The URL of this group's avatar image
-	AvatarUrl *string        `json:"avatar_url,omitempty"`
-	External  *ExternalLinks `json:"external,omitempty"`
-	// Whether or not this group is a developer group.
-	IsDeveloper *bool `json:"is_developer,omitempty"`
-}
-
 // A group join request.
 type JoinRequest struct {
 	Identity *identity.Handle `json:"identity,omitempty"`
@@ -99,8 +81,8 @@ type Profile struct {
 	// Represent a resource's readable display name.
 	DisplayName string `json:"display_name"`
 	// The URL of this group's avatar image.
-	AvatarUrl *string        `json:"avatar_url,omitempty"`
-	External  *ExternalLinks `json:"external,omitempty"`
+	AvatarUrl *string              `json:"avatar_url,omitempty"`
+	External  *group.ExternalLinks `json:"external,omitempty"`
 	// Whether or not this group is a developer.
 	IsDeveloper *bool `json:"is_developer,omitempty"`
 	// Detailed information about a profile.
@@ -115,9 +97,8 @@ type Profile struct {
 	// A list of group join requests.
 	JoinRequests []*JoinRequest `json:"join_requests,omitempty"`
 	// Whether or not the current identity is currently requesting to join this group.
-	IsCurrentIdentityRequestingJoin *bool      `json:"is_current_identity_requesting_join,omitempty"`
-	OwnerIdentityId                 uuid.UUID  `json:"owner_identity_id"`
-	ThreadId                        *uuid.UUID `json:"thread_id,omitempty"`
+	IsCurrentIdentityRequestingJoin *bool     `json:"is_current_identity_requesting_join,omitempty"`
+	OwnerIdentityId                 uuid.UUID `json:"owner_identity_id"`
 }
 
 // The current publicity value for the given group.
@@ -147,8 +128,8 @@ type Summary struct {
 	GroupId     uuid.UUID           `json:"group_id"`
 	DisplayName rivetgo.DisplayName `json:"display_name"`
 	// The URL of this group's avatar image.
-	AvatarUrl *string        `json:"avatar_url,omitempty"`
-	External  *ExternalLinks `json:"external,omitempty"`
+	AvatarUrl *string              `json:"avatar_url,omitempty"`
+	External  *group.ExternalLinks `json:"external,omitempty"`
 	// Whether or not this group is a developer.
 	IsDeveloper bool        `json:"is_developer"`
 	Bio         rivetgo.Bio `json:"bio"`

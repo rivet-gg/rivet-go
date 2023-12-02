@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
 	io "io"
@@ -35,11 +35,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Marks an upload as complete.
 func (c *Client) CompleteUpload(ctx context.Context, uploadId uuid.UUID) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"uploads/%v/complete", uploadId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/uploads/%v/complete", uploadId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

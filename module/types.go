@@ -3,12 +3,11 @@
 package module
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
-	core "github.com/rivet-gg/rivet-go/core"
+	uuid "github.com/google/uuid"
 )
 
 type FindLobbyRequest struct {
-	Origin      *string                   `json:"-"`
-	NamespaceId *core.Optional[uuid.UUID] `json:"namespace_id,omitempty"`
-	Data        any                       `json:"data,omitempty"`
+	Origin      *string     `json:"-"`
+	NamespaceId *uuid.UUID  `json:"namespace_id,omitempty"`
+	Data        interface{} `json:"data,omitempty"`
 }

@@ -47,11 +47,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 // on any device. For example, when playing a console game, the user can scan a
 // QR code for `identity_link_url` to authenticate on their phone.
 func (c *Client) Prepare(ctx context.Context) (*identity.PrepareGameLinkResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "game-links"
+	endpointURL := baseURL + "/" + "identity/game-links"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -126,11 +126,11 @@ func (c *Client) Prepare(ctx context.Context) (*identity.PrepareGameLinkResponse
 
 // Returns the current status of a linking process. Once `status` is `complete`, the identity's profile should be fetched again since they may have switched accounts.
 func (c *Client) Get(ctx context.Context, request *identity.GetGameLinkRequest) (*identity.GetGameLinkResponse, error) {
-	baseURL := "https://identity.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "game-links"
+	endpointURL := baseURL + "/" + "identity/game-links"
 
 	queryParams := make(url.Values)
 	queryParams.Add("identity_link_token", fmt.Sprintf("%v", request.IdentityLinkToken))

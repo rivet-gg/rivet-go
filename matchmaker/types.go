@@ -3,7 +3,7 @@
 package matchmaker
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	geo "github.com/rivet-gg/rivet-go/geo"
 )
@@ -56,14 +56,14 @@ type JoinRegion struct {
 
 // A public lobby in the lobby list.
 type LobbyInfo struct {
-	RegionId         string    `json:"region_id"`
-	GameModeId       string    `json:"game_mode_id"`
-	LobbyId          uuid.UUID `json:"lobby_id"`
-	MaxPlayersNormal int       `json:"max_players_normal"`
-	MaxPlayersDirect int       `json:"max_players_direct"`
-	MaxPlayersParty  int       `json:"max_players_party"`
-	TotalPlayerCount int       `json:"total_player_count"`
-	State            *any      `json:"state,omitempty"`
+	RegionId         string      `json:"region_id"`
+	GameModeId       string      `json:"game_mode_id"`
+	LobbyId          uuid.UUID   `json:"lobby_id"`
+	MaxPlayersNormal int         `json:"max_players_normal"`
+	MaxPlayersDirect int         `json:"max_players_direct"`
+	MaxPlayersParty  int         `json:"max_players_party"`
+	TotalPlayerCount int         `json:"total_player_count"`
+	State            interface{} `json:"state,omitempty"`
 }
 
 // A region that the player can connect to.

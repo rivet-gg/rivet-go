@@ -3,8 +3,9 @@
 package group
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
+	group "github.com/rivet-gg/rivet-go/common/group"
 	upload "github.com/rivet-gg/rivet-go/upload"
 )
 
@@ -72,8 +73,8 @@ type PrepareAvatarUploadResponse struct {
 
 type SearchResponse struct {
 	// A list of group handles.
-	Groups []*Handle `json:"groups,omitempty"`
-	Anchor *string   `json:"anchor,omitempty"`
+	Groups []*group.Handle `json:"groups,omitempty"`
+	Anchor *string         `json:"anchor,omitempty"`
 }
 
 type TransferOwnershipRequest struct {

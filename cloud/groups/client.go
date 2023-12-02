@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	cloud "github.com/rivet-gg/rivet-go/cloud"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Validates information used to create a new group.
 func (c *Client) Validate(ctx context.Context, request *cloud.ValidateGroupRequest) (*cloud.ValidateGroupResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "groups/validate"
+	endpointURL := baseURL + "/" + "cloud/groups/validate"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -115,11 +115,11 @@ func (c *Client) Validate(ctx context.Context, request *cloud.ValidateGroupReque
 
 // Converts the given group into a developer group.
 func (c *Client) ConvertGroup(ctx context.Context, groupId uuid.UUID) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"groups/%v/convert", groupId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/groups/%v/convert", groupId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

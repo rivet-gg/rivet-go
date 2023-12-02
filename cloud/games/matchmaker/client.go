@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	games "github.com/rivet-gg/rivet-go/cloud/games"
 	core "github.com/rivet-gg/rivet-go/core"
@@ -37,11 +37,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Exports lobby history over a given query time span.
 func (c *Client) ExportMatchmakerLobbyHistory(ctx context.Context, gameId uuid.UUID, request *games.ExportMatchmakerLobbyHistoryRequest) (*games.ExportMatchmakerLobbyHistoryResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/matchmaker/lobbies/export-history", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/matchmaker/lobbies/export-history", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -116,11 +116,11 @@ func (c *Client) ExportMatchmakerLobbyHistory(ctx context.Context, gameId uuid.U
 
 // Deletes a matchmaker lobby, stopping it immediately.
 func (c *Client) DeleteMatchmakerLobby(ctx context.Context, gameId uuid.UUID, lobbyId uuid.UUID) (*games.DeleteMatchmakerLobbyResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/matchmaker/lobbies/%v", gameId, lobbyId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/matchmaker/lobbies/%v", gameId, lobbyId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -195,11 +195,11 @@ func (c *Client) DeleteMatchmakerLobby(ctx context.Context, gameId uuid.UUID, lo
 
 // Returns the logs for a given lobby.
 func (c *Client) GetLobbyLogs(ctx context.Context, gameId uuid.UUID, lobbyId uuid.UUID, request *games.GetLobbyLogsRequest) (*games.GetLobbyLogsResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/matchmaker/lobbies/%v/logs", gameId, lobbyId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/matchmaker/lobbies/%v/logs", gameId, lobbyId)
 
 	queryParams := make(url.Values)
 	queryParams.Add("stream", fmt.Sprintf("%v", request.Stream))
@@ -283,11 +283,11 @@ func (c *Client) GetLobbyLogs(ctx context.Context, gameId uuid.UUID, lobbyId uui
 
 // Generates a download URL for logs.
 func (c *Client) ExportLobbyLogs(ctx context.Context, gameId uuid.UUID, lobbyId uuid.UUID, request *games.ExportLobbyLogsRequest) (*games.ExportLobbyLogsResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/matchmaker/lobbies/%v/logs/export", gameId, lobbyId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/matchmaker/lobbies/%v/logs/export", gameId, lobbyId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

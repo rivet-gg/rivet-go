@@ -36,11 +36,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 // Regions are sorted by most optimal to least optimal. The player's IP address
 // is used to calculate the regions' optimality.
 func (c *Client) List(ctx context.Context) (*matchmaker.ListRegionsResponse, error) {
-	baseURL := "https://matchmaker.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "regions"
+	endpointURL := baseURL + "/" + "matchmaker/regions"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

@@ -4,7 +4,8 @@ package identity
 
 import (
 	rivetgo "github.com/rivet-gg/rivet-go"
-	game "github.com/rivet-gg/rivet-go/game"
+	game "github.com/rivet-gg/rivet-go/common/game"
+	identity "github.com/rivet-gg/rivet-go/common/identity"
 	time "time"
 )
 
@@ -16,7 +17,7 @@ type GetGameLinkRequest struct {
 type GetGameLinkResponse struct {
 	Status          GameLinkStatus          `json:"status,omitempty"`
 	Game            *game.Handle            `json:"game,omitempty"`
-	CurrentIdentity *Handle                 `json:"current_identity,omitempty"`
+	CurrentIdentity *identity.Handle        `json:"current_identity,omitempty"`
 	NewIdentity     *GetGameLinkNewIdentity `json:"new_identity,omitempty"`
 	Watch           *rivetgo.WatchResponse  `json:"watch,omitempty"`
 }

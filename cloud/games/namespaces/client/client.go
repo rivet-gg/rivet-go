@@ -8,7 +8,7 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	namespaces "github.com/rivet-gg/rivet-go/cloud/games/namespaces"
 	analytics "github.com/rivet-gg/rivet-go/cloud/games/namespaces/analytics"
@@ -44,11 +44,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Creates a new namespace for the given game.
 func (c *Client) CreateGameNamespace(ctx context.Context, gameId uuid.UUID, request *namespaces.CreateGameNamespaceRequest) (*namespaces.CreateGameNamespaceResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -123,11 +123,11 @@ func (c *Client) CreateGameNamespace(ctx context.Context, gameId uuid.UUID, requ
 
 // Validates information used to create a new game namespace.
 func (c *Client) ValidateGameNamespace(ctx context.Context, gameId uuid.UUID, request *namespaces.ValidateGameNamespaceRequest) (*namespaces.ValidateGameNamespaceResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/validate", gameId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/validate", gameId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -202,11 +202,11 @@ func (c *Client) ValidateGameNamespace(ctx context.Context, gameId uuid.UUID, re
 
 // Gets a game namespace by namespace ID.
 func (c *Client) GetGameNamespaceById(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID) (*namespaces.GetGameNamespaceByIdResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -281,11 +281,11 @@ func (c *Client) GetGameNamespaceById(ctx context.Context, gameId uuid.UUID, nam
 
 // Adds an authenticated user to the given game namespace.
 func (c *Client) UpdateNamespaceCdnAuthUser(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.UpdateNamespaceCdnAuthUserRequest) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/auth-user", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/auth-user", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -361,11 +361,11 @@ func (c *Client) UpdateNamespaceCdnAuthUser(ctx context.Context, gameId uuid.UUI
 //
 // A user name.
 func (c *Client) RemoveNamespaceCdnAuthUser(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, user string) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/auth-user/%v", gameId, namespaceId, user)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/auth-user/%v", gameId, namespaceId, user)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -439,11 +439,11 @@ func (c *Client) RemoveNamespaceCdnAuthUser(ctx context.Context, gameId uuid.UUI
 
 // Updates the CDN authentication type of the given game namesapce.
 func (c *Client) SetNamespaceCdnAuthType(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.SetNamespaceCdnAuthTypeRequest) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/cdn-auth", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/cdn-auth", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -517,11 +517,11 @@ func (c *Client) SetNamespaceCdnAuthType(ctx context.Context, gameId uuid.UUID, 
 
 // Toggles whether or not to allow authentication based on domain for the given game namesapce.
 func (c *Client) ToggleNamespaceDomainPublicAuth(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.ToggleNamespaceDomainPublicAuthRequest) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/domain-public-auth", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/domain-public-auth", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -595,11 +595,11 @@ func (c *Client) ToggleNamespaceDomainPublicAuth(ctx context.Context, gameId uui
 
 // Adds a domain to the given game namespace.
 func (c *Client) AddNamespaceDomain(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.AddNamespaceDomainRequest) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/domains", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/domains", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -675,11 +675,11 @@ func (c *Client) AddNamespaceDomain(ctx context.Context, gameId uuid.UUID, names
 //
 // A valid domain name (no protocol).
 func (c *Client) RemoveNamespaceDomain(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, domain string) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/domains/%v", gameId, namespaceId, domain)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/domains/%v", gameId, namespaceId, domain)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -753,11 +753,11 @@ func (c *Client) RemoveNamespaceDomain(ctx context.Context, gameId uuid.UUID, na
 
 // Updates matchmaker config for the given game namespace.
 func (c *Client) UpdateGameNamespaceMatchmakerConfig(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.UpdateGameNamespaceMatchmakerConfigRequest) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/mm-config", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/mm-config", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -834,11 +834,11 @@ func (c *Client) UpdateGameNamespaceMatchmakerConfig(ctx context.Context, gameId
 // A universally unique identifier.
 // A universally unique identifier.
 func (c *Client) GetGameNamespaceVersionHistoryList(ctx context.Context, gameId string, namespaceId string, request *namespaces.GetGameNamespaceVersionHistoryRequest) (*namespaces.GetGameNamespaceVersionHistoryResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/version-history", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/version-history", gameId, namespaceId)
 
 	queryParams := make(url.Values)
 	if request.Anchor != nil {
@@ -924,11 +924,11 @@ func (c *Client) GetGameNamespaceVersionHistoryList(ctx context.Context, gameId 
 
 // Validates information used to update a game namespace's matchmaker config.
 func (c *Client) ValidateGameNamespaceMatchmakerConfig(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.ValidateGameNamespaceMatchmakerConfigRequest) (*namespaces.ValidateGameNamespaceMatchmakerConfigResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/mm-config/validate", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/mm-config/validate", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1003,11 +1003,11 @@ func (c *Client) ValidateGameNamespaceMatchmakerConfig(ctx context.Context, game
 
 // Creates a development token for the given namespace.
 func (c *Client) CreateGameNamespaceTokenDevelopment(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.CreateGameNamespaceTokenDevelopmentRequest) (*namespaces.CreateGameNamespaceTokenDevelopmentResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/tokens/development", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/tokens/development", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1082,11 +1082,11 @@ func (c *Client) CreateGameNamespaceTokenDevelopment(ctx context.Context, gameId
 
 // Validates information used to create a new game namespace development token.
 func (c *Client) ValidateGameNamespaceTokenDevelopment(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.ValidateGameNamespaceTokenDevelopmentRequest) (*namespaces.ValidateGameNamespaceTokenDevelopmentResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/tokens/development/validate", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/tokens/development/validate", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1161,11 +1161,11 @@ func (c *Client) ValidateGameNamespaceTokenDevelopment(ctx context.Context, game
 
 // Creates a public token for the given namespace.
 func (c *Client) CreateGameNamespaceTokenPublic(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID) (*namespaces.CreateGameNamespaceTokenPublicResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/tokens/public", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/tokens/public", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)
@@ -1240,11 +1240,11 @@ func (c *Client) CreateGameNamespaceTokenPublic(ctx context.Context, gameId uuid
 
 // Updates the version of a game namespace.
 func (c *Client) UpdateGameNamespaceVersion(ctx context.Context, gameId uuid.UUID, namespaceId uuid.UUID, request *namespaces.UpdateGameNamespaceVersionRequest) error {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"games/%v/namespaces/%v/version", gameId, namespaceId)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"cloud/games/%v/namespaces/%v/version", gameId, namespaceId)
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

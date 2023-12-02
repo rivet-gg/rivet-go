@@ -4,7 +4,7 @@ package cloud
 
 import (
 	fmt "fmt"
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	version "github.com/rivet-gg/rivet-go/cloud/version"
 	matchmaker "github.com/rivet-gg/rivet-go/cloud/version/matchmaker"
@@ -343,8 +343,8 @@ type RegionSummary struct {
 	RegionNameId string `json:"region_name_id"`
 	// The server provider of this region.
 	Provider string `json:"provider"`
-	// A universal number given to this region.
-	UniversalRegion float64 `json:"universal_region"`
+	// A universal region label given to this region.
+	UniversalRegion UniversalRegion `json:"universal_region,omitempty"`
 	// Represent a resource's readable display name.
 	ProviderDisplayName string `json:"provider_display_name"`
 	// Represent a resource's readable display name.
@@ -367,6 +367,7 @@ type RegionTier struct {
 	Disk int `json:"disk"`
 	// Internet bandwidth (MB).
 	Bandwidth int `json:"bandwidth"`
+	// **Deprecated**
 	// Price billed for every second this server is running (in quadrillionth USD, 1,000,000,000,000 = $1.00).
 	PricePerSecond int `json:"price_per_second"`
 }
@@ -379,8 +380,6 @@ type SvcMetrics struct {
 	Cpu []float64 `json:"cpu,omitempty"`
 	// Memory metrics.
 	Memory []float64 `json:"memory,omitempty"`
-	// Peak memory metrics.
-	MemoryMax []float64 `json:"memory_max,omitempty"`
 	// Total allocated memory (MB).
 	AllocatedMemory *float64 `json:"allocated_memory,omitempty"`
 }
@@ -398,4 +397,135 @@ type SvcPerf struct {
 	Spans []*LogsPerfSpan `json:"spans,omitempty"`
 	// A list of performance marks.
 	Marks []*LogsPerfMark `json:"marks,omitempty"`
+}
+
+type UniversalRegion string
+
+const (
+	UniversalRegionUnknown      UniversalRegion = "unknown"
+	UniversalRegionLocal        UniversalRegion = "local"
+	UniversalRegionAmsterdam    UniversalRegion = "amsterdam"
+	UniversalRegionAtlanta      UniversalRegion = "atlanta"
+	UniversalRegionBangalore    UniversalRegion = "bangalore"
+	UniversalRegionDallas       UniversalRegion = "dallas"
+	UniversalRegionFrankfurt    UniversalRegion = "frankfurt"
+	UniversalRegionLondon       UniversalRegion = "london"
+	UniversalRegionMumbai       UniversalRegion = "mumbai"
+	UniversalRegionNewark       UniversalRegion = "newark"
+	UniversalRegionNewYorkCity  UniversalRegion = "new_york_city"
+	UniversalRegionSanFrancisco UniversalRegion = "san_francisco"
+	UniversalRegionSingapore    UniversalRegion = "singapore"
+	UniversalRegionSydney       UniversalRegion = "sydney"
+	UniversalRegionTokyo        UniversalRegion = "tokyo"
+	UniversalRegionToronto      UniversalRegion = "toronto"
+	UniversalRegionWashingtonDc UniversalRegion = "washington_dc"
+	UniversalRegionChicago      UniversalRegion = "chicago"
+	UniversalRegionParis        UniversalRegion = "paris"
+	UniversalRegionSeattle      UniversalRegion = "seattle"
+	UniversalRegionSaoPaulo     UniversalRegion = "sao_paulo"
+	UniversalRegionStockholm    UniversalRegion = "stockholm"
+	UniversalRegionChennai      UniversalRegion = "chennai"
+	UniversalRegionOsaka        UniversalRegion = "osaka"
+	UniversalRegionMilan        UniversalRegion = "milan"
+	UniversalRegionMiami        UniversalRegion = "miami"
+	UniversalRegionJakarta      UniversalRegion = "jakarta"
+	UniversalRegionLosAngeles   UniversalRegion = "los_angeles"
+)
+
+func NewUniversalRegionFromString(s string) (UniversalRegion, error) {
+	switch s {
+	case "unknown":
+		return UniversalRegionUnknown, nil
+	case "local":
+		return UniversalRegionLocal, nil
+	case "amsterdam":
+		return UniversalRegionAmsterdam, nil
+	case "atlanta":
+		return UniversalRegionAtlanta, nil
+	case "bangalore":
+		return UniversalRegionBangalore, nil
+	case "dallas":
+		return UniversalRegionDallas, nil
+	case "frankfurt":
+		return UniversalRegionFrankfurt, nil
+	case "london":
+		return UniversalRegionLondon, nil
+	case "mumbai":
+		return UniversalRegionMumbai, nil
+	case "newark":
+		return UniversalRegionNewark, nil
+	case "new_york_city":
+		return UniversalRegionNewYorkCity, nil
+	case "san_francisco":
+		return UniversalRegionSanFrancisco, nil
+	case "singapore":
+		return UniversalRegionSingapore, nil
+	case "sydney":
+		return UniversalRegionSydney, nil
+	case "tokyo":
+		return UniversalRegionTokyo, nil
+	case "toronto":
+		return UniversalRegionToronto, nil
+	case "washington_dc":
+		return UniversalRegionWashingtonDc, nil
+	case "chicago":
+		return UniversalRegionChicago, nil
+	case "paris":
+		return UniversalRegionParis, nil
+	case "seattle":
+		return UniversalRegionSeattle, nil
+	case "sao_paulo":
+		return UniversalRegionSaoPaulo, nil
+	case "stockholm":
+		return UniversalRegionStockholm, nil
+	case "chennai":
+		return UniversalRegionChennai, nil
+	case "osaka":
+		return UniversalRegionOsaka, nil
+	case "milan":
+		return UniversalRegionMilan, nil
+	case "miami":
+		return UniversalRegionMiami, nil
+	case "jakarta":
+		return UniversalRegionJakarta, nil
+	case "los_angeles":
+		return UniversalRegionLosAngeles, nil
+	}
+	var t UniversalRegion
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UniversalRegion) Ptr() *UniversalRegion {
+	return &u
+}
+
+type BootstrapCaptcha struct {
+	Turnstile *BootstrapCaptchaTurnstile `json:"turnstile,omitempty"`
+}
+
+type BootstrapCaptchaTurnstile struct {
+	SiteKey string `json:"site_key"`
+}
+
+// The type of cluster that the backend is currently running.
+type BootstrapCluster string
+
+const (
+	BootstrapClusterEnterprise BootstrapCluster = "enterprise"
+	BootstrapClusterOss        BootstrapCluster = "oss"
+)
+
+func NewBootstrapClusterFromString(s string) (BootstrapCluster, error) {
+	switch s {
+	case "enterprise":
+		return BootstrapClusterEnterprise, nil
+	case "oss":
+		return BootstrapClusterOss, nil
+	}
+	var t BootstrapCluster
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (b BootstrapCluster) Ptr() *BootstrapCluster {
+	return &b
 }

@@ -10,7 +10,7 @@ import (
 	fmt "fmt"
 	rivetgo "github.com/rivet-gg/rivet-go"
 	core "github.com/rivet-gg/rivet-go/core"
-	module "github.com/rivet-gg/rivet-go/module"
+	rivetgomodule "github.com/rivet-gg/rivet-go/module"
 	io "io"
 	http "net/http"
 )
@@ -34,12 +34,12 @@ func NewClient(opts ...core.ClientOption) *Client {
 }
 
 // Makes a request to a module's script.
-func (c *Client) Call(ctx context.Context, module string, script string, request *module.FindLobbyRequest) (*module.CallResponse, error) {
-	baseURL := "https://module.api.rivet.gg/v1"
+func (c *Client) Call(ctx context.Context, module string, script string, request *rivetgomodule.FindLobbyRequest) (*rivetgomodule.CallResponse, error) {
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := fmt.Sprintf(baseURL+"/"+"modules/%v/scripts/%v/call", module, script)
+	endpointURL := fmt.Sprintf(baseURL+"/"+"module/modules/%v/scripts/%v/call", module, script)
 
 	headers := c.header.Clone()
 	if request.Origin != nil {
@@ -100,7 +100,7 @@ func (c *Client) Call(ctx context.Context, module string, script string, request
 		return apiError
 	}
 
-	var response *module.CallResponse
+	var response *rivetgomodule.CallResponse
 	if err := core.DoRequest(
 		ctx,
 		c.httpClient,

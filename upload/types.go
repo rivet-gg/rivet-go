@@ -12,10 +12,14 @@ type PrepareFile struct {
 	ContentLength int64 `json:"content_length"`
 }
 
-// A presigned request used to upload files.  Upload your file to the given URL via a PUT request.
+// A presigned request used to upload files. Upload your file to the given URL via a PUT request.
 type PresignedRequest struct {
 	// The name of the file to upload.  This is the same as the one given in the upload prepare file.
 	Path string `json:"path"`
 	// The URL of the presigned request for which to upload your file to.
 	Url string `json:"url"`
+	// The byte offset for this multipart chunk. Always 0 if not a multipart upload.
+	ByteOffset int64 `json:"byte_offset"`
+	// Expected size of this upload.
+	ContentLength int64 `json:"content_length"`
 }

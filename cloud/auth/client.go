@@ -34,11 +34,11 @@ func NewClient(opts ...core.ClientOption) *Client {
 
 // Returns information about the current authenticated agent.
 func (c *Client) Inspect(ctx context.Context) (*cloud.InspectResponse, error) {
-	baseURL := "https://cloud.api.rivet.gg/v1"
+	baseURL := "https://api.rivet.gg"
 	if c.baseURL != "" {
 		baseURL = c.baseURL
 	}
-	endpointURL := baseURL + "/" + "auth/inspect"
+	endpointURL := baseURL + "/" + "cloud/auth/inspect"
 
 	errorDecoder := func(statusCode int, body io.Reader) error {
 		raw, err := io.ReadAll(body)

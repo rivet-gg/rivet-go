@@ -15,7 +15,7 @@ type GetLobbyLogsRequest struct {
 
 type DeleteMatchmakerLobbyResponse struct {
 	// Whether or not the lobby was successfully stopped.
-	DidRemove *bool `json:"did_remove,omitempty"`
+	DidRemove bool `json:"did_remove"`
 }
 
 type ExportLobbyLogsRequest struct {
@@ -29,9 +29,9 @@ type ExportLobbyLogsResponse struct {
 
 type ExportMatchmakerLobbyHistoryRequest struct {
 	// Unsigned 64 bit integer.
-	QueryStart *int64 `json:"query_start,omitempty"`
+	QueryStart int64 `json:"query_start"`
 	// Unsigned 64 bit integer.
-	QueryEnd *int64 `json:"query_end,omitempty"`
+	QueryEnd int64 `json:"query_end"`
 }
 
 type ExportMatchmakerLobbyHistoryResponse struct {

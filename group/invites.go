@@ -3,7 +3,8 @@
 package group
 
 import (
-	uuid "github.com/gofrs/uuid/v5"
+	uuid "github.com/google/uuid"
+	group "github.com/rivet-gg/rivet-go/common/group"
 )
 
 type ConsumeInviteResponse struct {
@@ -23,5 +24,5 @@ type CreateInviteResponse struct {
 }
 
 type GetInviteResponse struct {
-	Group *Handle `json:"group,omitempty"`
+	Group *group.Handle `json:"group,omitempty"`
 }
